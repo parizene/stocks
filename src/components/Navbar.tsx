@@ -31,7 +31,7 @@ export default function Navbar() {
   }, [supabase]);
 
   return (
-    <nav className="flex p-4 justify-between border-b border-border">
+    <nav className="flex p-4 justify-between border-b border-border sticky top-0 bg-background">
       <div>
         <Button variant="link">
           <Link href="/" className="text-base">
