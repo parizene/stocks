@@ -40,6 +40,7 @@
   },
   "devDependencies": {
     "encoding": "^0.1.13",
+    "prettier-plugin-tailwindcss": "^0.4.0",
     "supabase": "^1.75.3"
   }
 }
