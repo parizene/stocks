@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@/components/Auth";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,7 +12,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/components/ui/use-toast";
 import { Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
@@ -24,7 +24,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const router = useRouter();
-  const { toast } = useToast();
+  const auth = useAuth();
 
   const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -47,54 +47,16 @@ export default function Login() {
   };
 
   const handleSubmit = async () => {
+    if (!auth) return;
+
     if (loginType === "signin") {
-      signIn(email, password);
+      if (await auth.signIn(email, password)) {
+        router.push("/portfolios");
+      }
     } else {
-      signUp(email, password);
-    }
-  };
-
-  const signIn = async (email: string, password: string) => {
-    const res = await fetch(`${location.origin}/auth/signin`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    });
-    if (res.ok) {
-      router.push("/portfolios");
-    } else {
-      const json = await res.json();
-      toast({
-        title: "Error",
-        description: json.error,
-      });
-    }
-  };
-
-  const signUp = async (email: string, password: string) => {
-    const res = await fetch(`${location.origin}/auth/signup`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    });
-    if (res.ok) {
-      setShowAlert(true);
-    } else {
-      const json = await res.json();
-      toast({
-        title: "Error",
-        description: json.error,
-      });
+      if (await auth.signUp(email, password)) {
+        setShowAlert(true);
+      }
     }
   };
 

@@ -15,9 +15,6 @@ export async function POST(req: NextRequest) {
   const supabase = createRouteHandlerClient({ cookies });
   const { email, password } = await req.json();
 
-  const url = getUrl();
-  console.log("url", url);
-
   const {
     data: { user },
     error,
@@ -25,7 +22,7 @@ export async function POST(req: NextRequest) {
     email,
     password,
     options: {
-      emailRedirectTo: `${url}/auth/callback`,
+      emailRedirectTo: `${getUrl()}/auth/callback`,
     },
   });
   if (!error) {

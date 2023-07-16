@@ -1,34 +1,22 @@
 "use client";
 
-import {
-  Session,
-  createClientComponentClient,
-} from "@supabase/auth-helpers-nextjs";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "./Auth";
 import { ModeToggle } from "./ModeToggle";
 import { Button } from "./ui/button";
 
 export default function Navbar() {
-  const supabase = createClientComponentClient();
-  const [session, setSession] = useState<Session | null>(null);
+  const router = useRouter();
+  const auth = useAuth();
 
-  useEffect(() => {
-    (async () => {
-      const { data } = await supabase.auth.getSession();
-      setSession(data.session);
+  const handleSignOut = async () => {
+    if (!auth) return;
 
-      const {
-        data: { subscription },
-      } = supabase.auth.onAuthStateChange((_event, session) => {
-        setSession(session);
-      });
-
-      return () => {
-        subscription.unsubscribe();
-      };
-    })();
-  }, [supabase]);
+    if (await auth.signOut()) {
+      router.push("/");
+    }
+  };
 
   return (
     <nav className="sticky top-0 flex justify-between border-b border-border bg-background p-4">
@@ -38,7 +26,7 @@ export default function Navbar() {
             Home
           </Link>
         </Button>
-        {session && (
+        {auth?.session && (
           <Button variant="link">
             <Link href="/portfolios" className="text-base">
               Portfolios
@@ -48,14 +36,10 @@ export default function Navbar() {
       </div>
 
       <div className="flex items-center">
-        {session ? (
-          <div>
-            <form action="/auth/signout" method="post">
-              <Button variant="ghost" type="submit" className="mr-4">
-                Sign out
-              </Button>
-            </form>
-          </div>
+        {auth?.session ? (
+          <Button variant="ghost" onClick={handleSignOut} className="mr-4">
+            Sign out
+          </Button>
         ) : (
           <Button variant="ghost" className="mr-4">
             <Link href="/login">Sign in</Link>

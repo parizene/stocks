@@ -1,3 +1,4 @@
+import { AuthProvider } from "@/components/Auth";
 import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
@@ -19,11 +20,13 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div>
-            <Navbar />
-            <div>{children}</div>
-            <Toaster />
-          </div>
+          <AuthProvider>
+            <div>
+              <Navbar />
+              <div>{children}</div>
+              <Toaster />
+            </div>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>
