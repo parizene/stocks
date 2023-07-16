@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const signIn = useCallback(async (email: string, password: string) => {
-    const res = await fetch(`${location.origin}/auth/signin`, {
+    const res = await fetch(`${location.origin}/api/auth/signin`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -74,7 +74,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const signUp = useCallback(async (email: string, password: string) => {
-    const res = await fetch(`${location.origin}/auth/signup`, {
+    const res = await fetch(`${location.origin}/api/auth/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -99,7 +99,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const signOut = useCallback(async () => {
-    const res = await fetch(`${location.origin}/auth/signout`, {
+    const res = await fetch(`${location.origin}/api/auth/signout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

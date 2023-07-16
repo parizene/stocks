@@ -8,12 +8,19 @@ export async function middleware(req: NextRequest) {
   const {
     data: { session },
   } = await supabase.auth.getSession();
+  const pathname = req.nextUrl.pathname;
   if (!session) {
-    if (req.nextUrl.pathname.startsWith("/portfolios")) {
+    if (
+      pathname.startsWith("/api") &&
+      (!pathname.startsWith("/api/auth") ||
+        pathname.startsWith("/api/auth/signout"))
+    ) {
+      return NextResponse.redirect(new URL("/api/auth/unauthorized", req.url));
+    } else if (pathname.startsWith("/portfolios")) {
       return NextResponse.redirect(new URL("/", req.url));
     }
   } else {
-    if (req.nextUrl.pathname.startsWith("/login")) {
+    if (pathname.startsWith("/login")) {
       return NextResponse.redirect(new URL("/", req.url));
     }
   }
