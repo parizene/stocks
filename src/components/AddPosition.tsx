@@ -67,7 +67,7 @@ export function AddPosition({
       <PopoverTrigger asChild>
         <Button variant="outline">Add Position</Button>
       </PopoverTrigger>
-      <PopoverContent className="w-96" align="start">
+      <PopoverContent className="md:w-96" align="start">
         <div>
           <Input
             type="text"
@@ -83,18 +83,18 @@ export function AddPosition({
             searchResults.map((searchResult, index) => (
               <li
                 key={index}
-                className="p-2 hover:bg-muted/50 hover:cursor-pointer hover:rounded-md first:mt-6"
+                className="p-2 first:mt-4 hover:cursor-pointer hover:rounded-md hover:bg-muted/50"
                 onClick={() => {
                   handleOpenChange(false);
 
                   onSymbolSelect(searchResult.symbol);
                 }}
               >
-                <div className="flex whitespace-nowrap">
-                  <p className="font-medium">{searchResult.symbol}</p>
-                  <p className="ml-4 mr-4 flex-grow truncate text-sm">
-                    {searchResult.longname}
-                  </p>
+                <div className="flex justify-between whitespace-nowrap px-2">
+                  <div className="mr-2 truncate">
+                    <p className="font-medium">{searchResult.symbol}</p>
+                    <p className="inline text-sm">{searchResult.longname}</p>
+                  </div>
                   <p className="text-sm">{`${searchResult.typeDisp} - ${searchResult.exchange}`}</p>
                 </div>
               </li>
