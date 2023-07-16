@@ -13,10 +13,7 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL("/", req.url));
     }
   } else {
-    if (
-      req.nextUrl.pathname.startsWith("/signin") ||
-      req.nextUrl.pathname.startsWith("/signup")
-    ) {
+    if (req.nextUrl.pathname.startsWith("/login")) {
       return NextResponse.redirect(new URL("/", req.url));
     }
   }

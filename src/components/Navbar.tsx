@@ -31,7 +31,7 @@ export default function Navbar() {
   }, [supabase]);
 
   return (
-    <nav className="flex p-4 justify-between border-b border-border sticky top-0 bg-background">
+    <nav className="sticky top-0 flex justify-between border-b border-border bg-background p-4">
       <div>
         <Button variant="link">
           <Link href="/" className="text-base">
@@ -57,14 +57,9 @@ export default function Navbar() {
             </form>
           </div>
         ) : (
-          <div className="flex mr-4">
-            <Button variant="ghost" className="mr-4">
-              <Link href="/signin">Sign in</Link>
-            </Button>
-            <Button variant="outline">
-              <Link href="/signup">Sign up</Link>
-            </Button>
-          </div>
+          <Button variant="ghost" className="mr-4">
+            <Link href="/login">Sign in</Link>
+          </Button>
         )}
         <ModeToggle />
       </div>
