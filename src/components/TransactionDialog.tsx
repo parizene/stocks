@@ -23,6 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { TransactionType } from "@/types/transaction-type";
 
 const TransactionDialog = ({
   type,
@@ -46,7 +47,7 @@ const TransactionDialog = ({
   onClose?(): void;
 }) => {
   const [transaction, setTransaction] = useState<{
-    type: "BUY" | "SELL";
+    type: TransactionType;
     date?: string;
     quantity?: number;
     price?: number;
@@ -154,7 +155,7 @@ const TransactionDialog = ({
               </Label>
               <div id="type" className="col-span-3">
                 <Select
-                  onValueChange={(value: "BUY" | "SELL") => {
+                  onValueChange={(value: TransactionType) => {
                     setTransaction((prevTransaction) => ({
                       ...prevTransaction,
                       type: value,

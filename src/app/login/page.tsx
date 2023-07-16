@@ -12,7 +12,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
@@ -24,7 +23,6 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showAlert, setShowAlert] = useState(false);
-  const supabase = createClientComponentClient();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -57,38 +55,45 @@ export default function Login() {
   };
 
   const signIn = async (email: string, password: string) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+    const res = await fetch(`${location.origin}/auth/signin`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
     });
-    if (!error) {
+    if (res.ok) {
       router.push("/portfolios");
     } else {
+      const json = await res.json();
       toast({
         title: "Error",
-        description: error.message,
+        description: json.error,
       });
     }
   };
 
   const signUp = async (email: string, password: string) => {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${location.origin}/auth/callback`,
+    const res = await fetch(`${location.origin}/auth/signup`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
     });
-    if (!error) {
-      if (data.session) {
-        router.push("/portfolios");
-      } else {
-        setShowAlert(true);
-      }
+    if (res.ok) {
+      setShowAlert(true);
     } else {
+      const json = await res.json();
       toast({
         title: "Error",
-        description: error.message,
+        description: json.error,
       });
     }
   };
