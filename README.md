@@ -1,0 +1,1 @@
+A web application built with Next.js and Supabase, offering real-time stock data sourced from Yandex Finance. The project is deployed on Vercel, ensuring efficient scalability and high-performance delivery.
